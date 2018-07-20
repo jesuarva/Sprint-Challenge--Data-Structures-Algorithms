@@ -21,15 +21,20 @@ import math
 
 def b_broken_eggs(floors, f):
     steps = 0
-    control = floors
+    top = floors
+    bottom = 1
+    control = math.ceil(floors_above / 2)
     broken_eggs = 0
 
-    def jump(direction):
-        floors_to_jump = math.ceil(floors * (2**steps))
-        if direction == 1:
-            control += floors_to_jump
-        elif direction == 0:
-            control -= floors_to_jump
+    def jump_up():
+        bottom = control
+        floors_above = top - bottom
+        control += math.ceil(floors_above / 2)
+
+    def jump_down():
+        top = control
+        floor_below = top - bottom
+        control -= math.ceil(floor_below / 2)
 
     while control > 0:
         steps += 1
@@ -38,6 +43,6 @@ def b_broken_eggs(floors, f):
             return control, broken_eggs
         elif control > f:
             broken_eggs += 1
-            jump(1)
+            jump_up()
         else:
-            jump(0)
+            jump_down()
